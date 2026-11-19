@@ -15,6 +15,8 @@ assign   ignore_cycleroutes       = false  # %ignore_cycleroutes% | Set true for
 assign   stick_to_cycleroutes     = false  # %stick_to_cycleroutes% | Set true to just follow cycleroutes | boolean
 assign   use_proposed_cycleroutes = false  # %use_proposed_cycleroutes% | Set to true to consider proposed and regular cycleroutes as equals | boolean
 assign   avoid_unsafe             = false  # %avoid_unsafe% | Set true to avoid standard highways | boolean
+assign   avoid_towpaths           = true  # %avoid_towpaths% | set to true to avoid towpaths | boolean
+
 
 assign   add_beeline              = false  # %add_beeline% | Enable beeline on distant start/end points | boolean
 
@@ -264,6 +266,10 @@ assign town_penalty
      switch estimated_town_class=5  1.4
      switch estimated_town_class=6  1.6 99 0
 
+assign towpath_penalty
+   switch avoid_towpaths
+    switch towpath=yes 5 0 0
+
 #
 # calculate the cost-factor, which is the factor
 # by which the distance of a way-segment is multiplied
@@ -292,6 +298,7 @@ assign costfactor
   #
   else min 9999
 
+  add towpath_penalty
   add town_penalty
   add no_forest_penalty
   add no_river_penalty

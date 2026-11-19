@@ -24,6 +24,7 @@ assign allow_ferries         = true   # %allow_ferries% | set to false to disall
 assign allow_motorways       = false  # %allow_motorways% | Set to true to allow motorways (useful in Asia / Oceania for example) | boolean
 
 assign use_proposed_cycleroutes = false  # %use_proposed_cycleroutes% | Set to true to consider proposed and regular cycleroutes as equals | boolean
+assign   avoid_towpaths           = true  # %avoid_towpaths% | set to true to avoid towpaths | boolean
 
 assign consider_traffic      = 0.1      # %consider_traffic% | avoiding roads that usually have traffic is? | [1=very important, 0.5=pretty important, 0.3=important, 0.1=slightly preferred, 0.0=do not consider traffic]
 assign consider_noise        = false  # %consider_noise% | Activate to prefer a low-noise route | boolean
@@ -231,6 +232,10 @@ assign town_penalty
      switch estimated_town_class=5  0.8
      switch estimated_town_class=6  1 99 0
 
+assign towpath_penalty
+   switch avoid_towpaths
+    switch towpath=yes 20 0 0
+
 assign costfactor
   switch and highway= not route=ferry  10000
   switch or highway=proposed highway=abandoned 10000
@@ -238,6 +243,7 @@ assign costfactor
   min 9999
   add max onewaypenalty accesspenalty
   add trafficpenalty
+  add towpath_penalty
   add town_penalty
   add no_forest_penalty
   add no_river_penalty
